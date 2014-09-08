@@ -1,0 +1,47 @@
+//Goes with snippet_main.cpp
+
+# comiler and linker
+CC = gcc
+LD = gcc
+
+CFLAGS += -Wall
+CFLAGS += -Wextra
+CFLAGS += -Wconversion
+CFLAGS += -Wshadow # local variable or type declaration shadows another variable
+CFLAGS += -pedantic
+
+# optimization level
+#CFLAGS += -O2
+
+CFLAGS += -std=c99
+# https://gcc.gnu.org/wiki/C11Status
+#CFLAGS += -std=c11
+#CFLAGS += -ansi
+
+CFLAGS += -g
+
+#-ftrapv
+#    This option generates traps for signed overflow on addition, subtraction, multiplication operations.
+#    Only detects signed arithmetic, unsigned resulsts are defined by C language.
+CFLAGS += -ftrapv
+
+# program name
+# OPTION:
+PROG = prog
+
+all: $(PROG)
+
+$(PROG): main.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+check: $(PROG)
+	valgrind --suppressions=ld.supp -v ./prog
+
+CLEAN_FILES=
+CLEAN_FILES += *.o
+CLEAN_FILES += $(PROG)
+CLEAN_FILES += .*.swp
+CLEAN_FILES += *~
+CLEAN_FILES += *.gch
+clean:
+	rm -f $(CLEAN_FILES)
